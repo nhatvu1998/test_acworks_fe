@@ -1,0 +1,22 @@
+import axios from "axios";
+import { createBrowserHistory } from "history";
+const history = createBrowserHistory();
+
+const instance = axios.create({
+  baseURL: "http://localhost:4000",
+});
+
+instance.defaults.headers.common[
+    "Authorization"
+    ] = `Bearer ${window.localStorage.getItem("token")}`;
+
+instance.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    throw new Error()
+  }
+);
+
+export default instance;
