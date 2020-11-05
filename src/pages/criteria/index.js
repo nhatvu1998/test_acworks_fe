@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Button, Row, Table, Input, Modal, Form, Radio, Col} from 'antd';
+import {Button, Row, Table, Input, Modal, Form, Radio, Col, Tag} from 'antd';
 import apis from '../../apis/index'
 import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
 import {PointType} from "../detail";
@@ -69,12 +69,13 @@ const CriteriaList = () => {
         return {
           ...x,
           stt: key + 1,
+          key,
         }
       }))
     })
   }
 
-  const renderProfile = () => {
+  const renderCriteria = () => {
     console.log(selectedCriteria)
     return (
       <>
@@ -103,9 +104,13 @@ const CriteriaList = () => {
             name="type"
             rules={[{ required: isAddCriteria, message: "Please choose point type!" }]}
           >
-            <Radio.Group defaultValue={selectedCriteria?.type || 0}>
-              <Radio value={0}>Minus</Radio>
-              <Radio value={1}>Plus</Radio>
+            <Radio.Group defaultValue={selectedCriteria?.type}>
+              <Radio value={0}>
+                <Tag color="error"> Minus</Tag>
+              </Radio>
+              <Radio value={1}>
+                <Tag color="success"> Plus</Tag>
+              </Radio>
             </Radio.Group>
           </Form.Item>
         </Form>
@@ -187,7 +192,11 @@ const CriteriaList = () => {
         title={isAddCriteria ? 'Create new criteria' : 'Update criteria'}
         okText="Create"
         cancelText="Cancel"
-        onCancel={() => setVisible(false)}
+        onCancel={() => {
+          setVisible(false)
+          setIsAddCriteria(false)
+          setSelectedCriteria(null)
+        }}
         onOk={() => {
           form
             .validateFields()
@@ -200,7 +209,7 @@ const CriteriaList = () => {
             });
         }}
       >
-        {renderProfile()}
+        {renderCriteria()}
       </Modal>
     </div>
   )

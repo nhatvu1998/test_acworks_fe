@@ -82,6 +82,7 @@ const UserList = () => {
         return {
           ...x,
           stt: key + 1,
+          key,
         }
       }))
     })
@@ -94,13 +95,22 @@ const UserList = () => {
             form={form}
             layout="vertical"
             name="form_in_modal"
+            initialValues={
+              !isAddUser && {
+                username: selectedUser?.username,
+                fullname: selectedUser?.fullname,
+                email: selectedUser?.email,
+                age: selectedUser?.age?.toString(),
+                gender: selectedUser?.gender
+              }
+            }
           >
           <Form.Item
             label="Username"
             name="username"
             rules={[{ required: true, message: "Please input your username!" }]}
           >
-            <Input placeholder="username" defaultValue={selectedUser?.username}/>
+            <Input placeholder="username" />
           </Form.Item>
             {isAddUser && (
               <>
@@ -148,7 +158,7 @@ const UserList = () => {
             name="fullname"
             rules={[{ message: "Please input your fullname!" }]}
           >
-            <Input placeholder="fullname" defaultValue={selectedUser?.fullname} />
+            <Input placeholder="fullname" />
           </Form.Item>
 
           <Form.Item
@@ -163,28 +173,24 @@ const UserList = () => {
             ]}
 
           >
-            <Input placeholder="email" defaultValue={selectedUser?.email} />
+            <Input placeholder="email" />
           </Form.Item>
 
           <Form.Item
             label="Age"
             name="age"
             rules={[
-              { message: "Please input your age!" },
-              {
-                pattern: /^[0-9]+$/,
-                message: "Tuổi không hợp lệ",
-              },
+              { message: "Please input your age!" }
             ]}
           >
-            <Input placeholder="age" defaultValue={selectedUser?.age} />
+            <Input placeholder="age" />
           </Form.Item>
 
           <Form.Item
             label="Gender"
             name="gender"
           >
-            <Radio.Group defaultValue={selectedUser?.gender}>
+            <Radio.Group>
               <Radio value={0}>Male</Radio>
               <Radio value={1}>Female</Radio>
             </Radio.Group>
@@ -257,6 +263,7 @@ const UserList = () => {
           <Button onClick={() => {
             setIsAddUser(true);
             setVisible(true);
+            setSelectedUser(null)
           }}>
             Add User
           </Button>
@@ -269,7 +276,11 @@ const UserList = () => {
         title={isAddUser ? 'Create new user' : 'Update user'}
         okText="Create"
         cancelText="Cancel"
-        onCancel={() => setVisible(false)}
+        forceRender
+        onCancel={() => {
+          setVisible(false)
+          setIsAddUser(false)
+        }}
         onOk={() => {
           form
             .validateFields()

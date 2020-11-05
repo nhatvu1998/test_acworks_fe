@@ -24,8 +24,10 @@ function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.auth.isSignedIn);
   const token = localStorage.getItem('token');
-  const decoded = jwt_decode(token);
-  dispatch({ type: USER_INFO, payload: decoded})
+  if (token) {
+    const decoded = jwt_decode(token);
+    dispatch({ type: USER_INFO, payload: decoded})
+  }
 
   return (
     <Router history={history}>

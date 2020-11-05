@@ -25,6 +25,7 @@ const Home = () => {
             return {
               ...x,
               stt: key + 1,
+              key,
             };
           })
         );
@@ -39,6 +40,11 @@ const Home = () => {
     },
     {
       title: "Name",
+      dataIndex: "username",
+      key: "username",
+    },
+    {
+      title: "Full name",
       dataIndex: "fullname",
       key: "fullname",
     },
@@ -47,6 +53,15 @@ const Home = () => {
       dataIndex: "totalPoint",
       key: "totalPoint",
       sorter: (a, b) => a.totalPoint - b.totalPoint,
+      render: (totalPoint) => {
+        return (
+          (totalPoint > 0) ? (
+            <span style={{ color: '#3f8600' }}>{totalPoint}</span>
+          ) : (
+            <span style={{ color: '#cf1322' }}>{totalPoint}</span>
+          )
+        )
+      }
     },
   ];
 

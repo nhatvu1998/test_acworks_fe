@@ -1,6 +1,4 @@
 import axios from "axios";
-import { createBrowserHistory } from "history";
-const history = createBrowserHistory();
 
 const instance = axios.create({
   baseURL: "http://localhost:4000",

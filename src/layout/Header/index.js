@@ -16,6 +16,7 @@ const Header = (props) => {
 
   const signOut = () => {
     dispatch({type: SIGN_OUT})
+    localStorage.removeItem('token')
     props.history.push('/login')
   }
   const menu = (

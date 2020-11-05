@@ -1,7 +1,7 @@
 import {SIGN_IN, SIGN_OUT, USER_INFO} from "../../constants/types";
 
 const INTIAL_STATE = {
-  isSignedIn: window.localStorage.getItem("token") ? true : false,
+  isSignedIn: !!window.localStorage.getItem("token"),
   profile: null
 };
 

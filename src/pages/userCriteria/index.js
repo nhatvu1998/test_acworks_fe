@@ -4,23 +4,20 @@ import {
   Col,
   DatePicker,
   Row,
-  Table,
-  Input,
-  Modal,
   Form,
-  Radio,
   Select,
   Card,
   notification,
 } from "antd";
 import apis from "../../apis/index";
 import moment from "moment";
+import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
+import {PointType} from "../detail";
 const { Option } = Select;
 
 const UserCriteria = () => {
   const [userList, setUserList] = useState([]);
   const [criteriaList, setCriteriaList] = useState([]);
-
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -46,7 +43,13 @@ const UserCriteria = () => {
   const renderCriteriaList = () => {
     if (criteriaList) {
       return criteriaList.map((x) => {
-        return <Option value={x.id}>{x.name}</Option>;
+        return <Option value={x.id}>{x.name} &nbsp;
+          {(x.type === PointType.Plus) ? (
+            <span style={{ color: '#3f8600' }}><ArrowUpOutlined /> {x.point}</span>
+          ) : (
+            <span style={{ color: '#cf1322' }}><ArrowDownOutlined /> {x.point}</span>
+          )}
+        </Option>;
       });
     }
   };
@@ -102,14 +105,23 @@ const UserCriteria = () => {
                   { required: true, message: "Please input criteria name!" },
                 ]}
               >
-                <Select placeholder="Select a user">{renderUserList()}</Select>
+                <Select
+                  placeholder="Select a user"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                  showSearch
+                >
+                  {renderUserList()}
+                </Select>
               </Form.Item>
               <Form.Item
                 label="Criterias"
                 name="criteriaIds"
                 rules={[{ required: true, message: "Please input criterias!" }]}
               >
-                <Select mode="multiple" placeholder="Please select">
+                <Select mode="multiple" placeholder="Please select criteria">
                   {renderCriteriaList()}
                 </Select>
               </Form.Item>
@@ -119,7 +131,7 @@ const UserCriteria = () => {
                 name="date"
                 rules={[{ required: true, message: "Please input date!" }]}
               >
-                <DatePicker />
+                <DatePicker disabledDate={(current) => current && current > moment().endOf('day')} />
               </Form.Item>
 
               <Form.Item>

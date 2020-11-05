@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Row, Table, Tag, Space, DatePicker } from 'antd';
+import { Row, Table, DatePicker } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import apis from '../../apis/index'
@@ -27,6 +27,7 @@ const Detail = () => {
                 return {
                     ...x,
                     stt: key + 1,
+                    key,
                 }
             }))
         })
